@@ -2,6 +2,10 @@ var slider = document.getElementById("mySlider");
 var output = document.getElementById("display");
 var resetButton = document.getElementById("reset");
 
+var minusButton = document.getElementById("minus");
+var plusButton = document.getElementById("plus");
+var step = 0.01;
+
 var defaultValue = 1.0;
 output.innerHTML = defaultValue;
 
@@ -17,17 +21,21 @@ getActiveTab().then(tabId => {
         if (tabId.toString() in result) {
             slider.value = result[tabId.toString()];
             tabSliderValues[tabId] = parseFloat(result[tabId.toString()]);
-        } else {
+        } 
+        else {
             slider.value = defaultValue;
             tabSliderValues[tabId] = defaultValue;
         }
         output.innerHTML = slider.value;
+
+        if (slider.value != defaultValue)
+            resetButton.disabled = false;
+        else
+            resetButton.disabled = true;
     });
 });
 
-if (slider.value !== defaultValue) {
-    resetButton.disabled = false;
-}
+
 
 function updateSliderValue(newSliderValue) {
     var activeTabId;
@@ -60,4 +68,26 @@ resetButton.onclick = function() {
     output.innerHTML = defaultValue;
     resetButton.disabled = true;
     updateSliderValue(defaultValue);
+}
+
+minusButton.onclick = function() {
+    slider.value = parseFloat(slider.value) - step;
+    output.innerHTML = slider.value;
+    updateSliderValue(slider.value);
+
+    if (slider.value != defaultValue)
+        resetButton.disabled = false;
+    else
+        resetButton.disabled = true;
+}
+
+plusButton.onclick = function() {
+    slider.value = parseFloat(slider.value) + step;
+    output.innerHTML = slider.value;
+    updateSliderValue(slider.value);
+
+    if (slider.value != defaultValue)
+        resetButton.disabled = false;
+    else
+        resetButton.disabled = true;
 }

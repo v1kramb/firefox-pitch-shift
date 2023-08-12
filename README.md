@@ -10,8 +10,11 @@ todo:
     - [x] Single page functionality
     - [ ] Bug: Slider/display remain the same when the link is changed, but speed doesn't change
     - [x] Bug: Multiple tabs (should have a speed for each tab)
-- [ ] Change pitch only
+    - [x] Bug: Reset button in new tab
+- [ ] Change pitch only (Tone.js?)
 - [ ] Sliders for pitch and speed
     - [ ] Radio input for coupling
+- [ ] Only show slider when video exists
 - [ ] Fine-grain control for sliders with shift key
+    - [x] Alternatively just add a +/- button lol
 - [ ] Bookmarking: Save speed/pitch settings for particular videos
