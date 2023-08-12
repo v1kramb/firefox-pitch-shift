@@ -1,0 +1,30 @@
+{
+    "manifest_version": 2,
+    "name": "Firefox Pitch Shift",
+    "version": "0.1",
+  
+    "description": "Dynamically shifts the pitch of all incoming audio.",
+  
+    "icons": {
+      "48": "icons/sliders-h.png"
+    },
+
+    "permissions": [
+      "activeTab",
+      "storage"
+    ],
+
+    "browser_action": {
+      "default_icon": "icons/sliders-h.png",
+      "default_title": "Firefox Pitch Shift",
+      "default_popup": "popup.html"
+    },
+
+    "content_scripts": [
+      {
+        "matches": ["<all_urls>"],
+        "js": ["shift.js"]
+      }
+    ]
+  }
+  
