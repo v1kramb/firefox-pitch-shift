@@ -3,49 +3,61 @@ var output = document.getElementById("display");
 var resetButton = document.getElementById("reset");
 
 var defaultValue = 1.0;
+output.innerHTML = defaultValue;
 
-browser.storage.local.get('sliderValue').then(result => {
-    if ('sliderValue' in result) 
-        slider.value = parseFloat(result.sliderValue);
-    else
-        slider.value = 1;
+var tabSliderValues = {};
 
-    output.innerHTML = slider.value;
+function getActiveTab() {
+    return browser.tabs.query({ active: true, currentWindow: true })
+        .then((tabs) => tabs[0].id);
+}
+
+getActiveTab().then(tabId => {
+    browser.storage.local.get(tabId.toString()).then(result => {
+        if (tabId.toString() in result) {
+            slider.value = result[tabId.toString()];
+            tabSliderValues[tabId] = parseFloat(result[tabId.toString()]);
+        } else {
+            slider.value = defaultValue;
+            tabSliderValues[tabId] = defaultValue;
+        }
+        output.innerHTML = slider.value;
+    });
 });
 
 if (slider.value !== defaultValue) {
     resetButton.disabled = false;
 }
 
+function updateSliderValue(newSliderValue) {
+    var activeTabId;
+    getActiveTab().then(tabId => {
+        activeTabId = tabId;
+        tabSliderValues[activeTabId] = newSliderValue;
+        browser.storage.local.set({ [activeTabId]: newSliderValue });
+
+        browser.tabs.sendMessage(activeTabId, {
+            type: 'changePlaybackRate',
+            value: newSliderValue
+        });
+    });
+}
+
 slider.oninput = function() {
-    output.innerHTML = this.value;
+    var newSliderValue = parseFloat(this.value);
+    output.innerHTML = newSliderValue;
+    
+    updateSliderValue(newSliderValue);
 
     if (this.value != defaultValue)
         resetButton.disabled = false;
     else
         resetButton.disabled = true;
-
-    browser.tabs.query({ active: true, currentWindow: true }).then((tabs) => {
-        browser.tabs.sendMessage(tabs[0].id, {
-            type: 'changePlaybackRate',
-            value: this.value
-        });
-    });
-
-    browser.storage.local.set({ sliderValue: this.value });
 }
 
 resetButton.onclick = function() {
     slider.value = defaultValue;
     output.innerHTML = defaultValue;
     resetButton.disabled = true;
-
-    browser.tabs.query({ active: true, currentWindow: true }).then((tabs) => {
-        browser.tabs.sendMessage(tabs[0].id, {
-            type: 'changePlaybackRate',
-            value: defaultValue
-        });
-    });
-
-    browser.storage.local.set({ sliderValue: defaultValue });
+    updateSliderValue(defaultValue);
 }
