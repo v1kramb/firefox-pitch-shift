@@ -1,0 +1,11 @@
+{
+  "name": "firefox-pitch-shift",
+  "version": "1.0.0",
+  "description": "",
+  "main": "",
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "tone": "^14.7.77"
+  }
+}

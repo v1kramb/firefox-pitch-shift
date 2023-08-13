@@ -6,7 +6,7 @@ var minusButton = document.getElementById("minus");
 var plusButton = document.getElementById("plus");
 var step = 0.01;
 
-var defaultValue = 1.0;
+var defaultValue = 0.0;
 output.innerHTML = defaultValue;
 
 var tabSliderValues = {};
@@ -35,8 +35,6 @@ getActiveTab().then(tabId => {
     });
 });
 
-
-
 function updateSliderValue(newSliderValue) {
     var activeTabId;
     getActiveTab().then(tabId => {
@@ -45,7 +43,7 @@ function updateSliderValue(newSliderValue) {
         browser.storage.local.set({ [activeTabId]: newSliderValue });
 
         browser.tabs.sendMessage(activeTabId, {
-            type: 'changePlaybackRate',
+            type: 'changePitch',
             value: newSliderValue
         });
     });

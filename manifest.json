@@ -11,7 +11,8 @@
 
     "permissions": [
       "activeTab",
-      "storage"
+      "storage",
+      "tabs"
     ],
 
     "browser_action": {
@@ -23,7 +24,7 @@
     "content_scripts": [
       {
         "matches": ["<all_urls>"],
-        "js": ["shift.js"]
+        "js": ["shift2.js"]
       }
     ]
   }
